@@ -13,7 +13,7 @@ function App() {
   const [authorizedLogin, setAuthorizedLogin] = useState("");
   const navigate = useNavigate();
 
-  // handles logout by clearing authorizedLogin 
+  // handles logout by clearing authorizedLogin
   const logoutHandler = (event) => {
     event.preventDefault();
     if (window.confirm("Are you sure want to logout?")) {

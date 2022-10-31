@@ -50,9 +50,4 @@ public class EmployeeController {
 		return bodyBuilder.body(body);
 	}
 
-	@GetMapping("/getEmployees")
-	public List<Employee> getEmployees() {
-		return employeeService.getEmployees();
-	}
-
 }

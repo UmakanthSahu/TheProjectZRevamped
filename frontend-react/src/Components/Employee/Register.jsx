@@ -8,7 +8,7 @@ export const Register = (props) => {
   const [password2, setPassword2] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [employeeId, setEmployeeId] = useState("");
-  
+
   // runs when registration form is submitted
   const onSubmitRegisterHandler = async (event) => {
     event.preventDefault();
