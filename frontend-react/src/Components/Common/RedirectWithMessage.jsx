@@ -20,12 +20,10 @@ export const RedirectWithMessage = (props) => {
     <div className="container my-2">
       <h2>{props.properties.title}</h2>
       <p style={{ color: props.properties.color }}>
-        {props.properties.message}
-        <Link to={props.properties.primaryLink}>here</Link>
+        {props.properties.message} <Link to={props.properties.primaryLink}>here</Link>
       </p>
       <p>
-        This page will automatically redirect to
-        {props.properties.redirectionPageName} page in {time} secs.
+        This page will automatically redirect to {props.properties.redirectionPageName} page in {time} secs.
       </p>
     </div>
   );

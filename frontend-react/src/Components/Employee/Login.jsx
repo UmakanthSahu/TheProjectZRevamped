@@ -7,6 +7,7 @@ export const Login = (props) => {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
+    // console.log(props.authorizedLogin)
     if (props.authorizedLogin !== "") {
       props.navigate("/dashboard");
     }
@@ -24,20 +25,21 @@ export const Login = (props) => {
         emailId: email,
         password: password,
       };
-      console.log("fine", employeeLoginData);
+      // console.log("fine", employeeLoginData);
 
       fetch(LOGIN_URL, getJSONRequestData(employeeLoginData))
-        .then((resp) => {
-          console.log(resp);
+        .then(async (resp) => {
+          const data = await resp.json();
           if (resp.status === 200) {
             props.setAuthorizedLogin(email);
             props.navigate("/dashboard");
-          } else {
+          } else {  
+            props.setTitle(data.description);
             props.navigate("/invalidCredentials");
           }
         })
         .catch((err) => {
-          console.log(err);
+          //console.log(err);
           window.alert("Something went wrong.... Please try after some time");
         });
     }

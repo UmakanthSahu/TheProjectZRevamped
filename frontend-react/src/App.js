@@ -11,6 +11,7 @@ import { useState } from "react";
 function App() {
   // when user is logged in, this state contains the email id
   const [authorizedLogin, setAuthorizedLogin] = useState("");
+  const [title, setTitle] = useState("");
   const navigate = useNavigate();
 
   // handles logout by clearing authorizedLogin
@@ -35,10 +36,11 @@ function App() {
                 authorizedLogin={authorizedLogin}
                 setAuthorizedLogin={setAuthorizedLogin}
                 navigate={navigate}
+                setTitle = {setTitle}
               />
             }
           />
-          <Route exact path="/register" element={<Register />} />
+          <Route exact path="/register" element={<Register setTitle={setTitle} navigate={navigate}/>} />
           <Route
             exact
             path="/dashboard"
@@ -57,7 +59,7 @@ function App() {
             element={
               <RedirectWithMessage
                 properties={{
-                  title: "Invalid Credentials",
+                  title: title,
                   message: "Please re-login",
                   redirectionPageName: "login",
                   primaryLink: "/login",
@@ -122,7 +124,7 @@ function App() {
               <RedirectWithMessage
                 properties={{
                   title: "Registration Failed",
-                  message: "Email Already Registered. Please register",
+                  message: title + ". Please register",
                   redirectionPageName: "Registration",
                   primaryLink: "/register",
                   color: "red",

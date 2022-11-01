@@ -29,7 +29,7 @@ public class EmployeeService {
 		return employeeRepository.findAll();
 	}
 
-	private boolean isEmployeeAlreadyRegistered(Employee employee) {
+	public boolean isEmployeeAlreadyRegistered(Employee employee) {
 		return employeeRepository.findByEmailId(employee.getEmailId()).isPresent();
 	}
 }

@@ -33,16 +33,17 @@ export const Register = (props) => {
       };
 
       fetch(REGISTER_URL, getJSONRequestData(employeeRegistrationData))
-        .then((resp) => {
-          console.log(resp);
+        .then(async (resp) => {
+          const data = await resp.json();
           if (resp.status === 200) {
             props.navigate("/registrationSuccess");
           } else {
+            props.setTitle(data.description);
             props.navigate("/registrationFailure");
           }
         })
         .catch((err) => {
-          console.log(err);
+          //console.log(err);
           window.alert("Something went wrong.... Please try after some time");
         });
     }
