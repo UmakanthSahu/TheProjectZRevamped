@@ -27,13 +27,14 @@ public class EmployeeController {
 	@PostMapping(path = "/registerEmployee", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RegistrationResponse> addEmployee(@RequestBody @NonNull Employee employee) {
 		boolean isEmployeeAdded = employeeService.addEmployee(employee);
-		return ResponseEntity.status(isEmployeeAdded ? HttpStatus.OK : HttpStatus.UNPROCESSABLE_ENTITY).body(
-				new RegistrationResponse(isEmployeeAdded, isEmployeeAdded ? "Success" : "Email already registered"));
+		return ResponseEntity.status(isEmployeeAdded ? HttpStatus.OK : HttpStatus.UNPROCESSABLE_ENTITY)
+				.body(new RegistrationResponse(isEmployeeAdded, isEmployeeAdded ? "Success" : "Email already registered"));
 	}
 
 	@PostMapping(path = "/loginEmployee", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<LoginResponse> login(@RequestBody @NonNull Employee employee) {
 		boolean isEmailRegistered = employeeService.isEmployeeAlreadyRegistered(employee);
+		
 		if (!isEmailRegistered) {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 					.body(new LoginResponse(isEmailRegistered, "Email not registered", false));

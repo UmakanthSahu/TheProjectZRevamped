@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { getJSONRequestData, LOGIN_URL } from "../../Services/ApiService";
+import { isValidEmail, isValidPasswordLength } from "../../Services/FormValidation";
 
 export const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    // console.log(props.authorizedLogin)
     if (props.authorizedLogin !== "") {
       props.navigate("/dashboard");
     }
@@ -15,33 +15,31 @@ export const Login = (props) => {
 
   const onSubmitLoginHandler = (event) => {
     event.preventDefault();
-    if (password.length < 8) {
-      alert(
-        "Password must be greater than 8 characters. Re-enter your password."
-      );
-      setPassword("");
-    } else {
+
+    // validation of form input
+    if (isValidEmail(email) && isValidPasswordLength(password)) {
       let employeeLoginData = {
         emailId: email,
         password: password,
       };
-      // console.log("fine", employeeLoginData);
-
+      
+      //connecting with backend
       fetch(LOGIN_URL, getJSONRequestData(employeeLoginData))
         .then(async (resp) => {
           const data = await resp.json();
           if (resp.status === 200) {
             props.setAuthorizedLogin(email);
             props.navigate("/dashboard");
-          } else {  
+          } else {
             props.setTitle(data.description);
             props.navigate("/invalidCredentials");
           }
         })
         .catch((err) => {
-          //console.log(err);
-          window.alert("Something went wrong.... Please try after some time");
+          window.alert("Something went wrong.... Please try again after some time");
         });
+    } else {
+      setPassword("");
     }
   };
 
@@ -63,6 +61,7 @@ export const Login = (props) => {
                 name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onBlur={(e) => setEmail(e.target.value.trim())}
                 placeholder="Enter your Email Address"
               />
             </div>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { getJSONRequestData, REGISTER_URL } from "../../Services/ApiService";
+import { areBothPasswordsEqual, isValidEmail, isValidPasswordLength } from "../../Services/FormValidation";
 
 export const Register = (props) => {
   const [name, setName] = useState("");
@@ -13,17 +14,9 @@ export const Register = (props) => {
   const onSubmitRegisterHandler = async (event) => {
     event.preventDefault();
 
-    // check if password is valid or not
-    if (password.length < 8 || password2.length < 8) {
-      alert("Password must be greater than 8 characters.");
-      setPassword("");
-      setPassword2("");
-    } else if (password !== password2) {
-      alert("passwords donot match. Re-enter.");
-      setPassword("");
-      setPassword2("");
-    } else {
-      // if valid then register using post request to backend API using fetch call
+    // form input validation
+    if(isValidEmail(email) && isValidPasswordLength(password) && areBothPasswordsEqual(password, password2)){
+      
       let employeeRegistrationData = {
         name: name,
         emailId: email,
@@ -31,21 +24,28 @@ export const Register = (props) => {
         phoneNumber: phoneNumber,
         employeeId: employeeId,
       };
-
+      
+      //post request to backend API using fetch call
       fetch(REGISTER_URL, getJSONRequestData(employeeRegistrationData))
         .then(async (resp) => {
+
+          //body of response
           const data = await resp.json();
+
           if (resp.status === 200) {
             props.navigate("/registrationSuccess");
           } else {
             props.setTitle(data.description);
             props.navigate("/registrationFailure");
           }
+
         })
         .catch((err) => {
-          //console.log(err);
-          window.alert("Something went wrong.... Please try after some time");
+          window.alert("Something went wrong.... Please try again after some time");
         });
+    }else{
+      setPassword("");
+      setPassword2("");
     }
   };
 
@@ -67,6 +67,7 @@ export const Register = (props) => {
                 placeholder="Enter your Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                onBlur={(e) => setName(e.target.value.trim())}
                 required
               />
             </div>
@@ -82,6 +83,7 @@ export const Register = (props) => {
                 placeholder="Enter your Employee Id"
                 value={employeeId}
                 onChange={(e) => setEmployeeId(e.target.value)}
+                onBlur={(e) => setEmployeeId(e.target.value.trim())}
                 required
               />
             </div>
@@ -97,6 +99,7 @@ export const Register = (props) => {
                 placeholder="Enter your Phone Number"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
+                onBlur={(e) => setPhoneNumber(e.target.value.trim())}
                 required
               />
             </div>
@@ -112,6 +115,7 @@ export const Register = (props) => {
                 placeholder="Enter your Email Address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onBlur={(e) => setEmail(e.target.value.trim())}
                 required
               />
             </div>
