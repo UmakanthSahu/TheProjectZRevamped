@@ -11,12 +11,20 @@ import javax.persistence.Table;
 @Table(name = "employees")
 public class Employee {
 
-	@Id
+	@Column(nullable = false)
 	private long employeeId;
+
+	@Column(nullable = false, length = 40)
 	private String name;
-	@Column(name = "email_id")
+
+	@Id
+	@Column(name = "email_id", length = 30)
 	private String emailId;
+
+	@Column(nullable = false, length = 50)
 	private char[] password;
+
+	@Column(nullable = false, length = 15)
 	private String phoneNumber;
 
 	public Employee() {
@@ -84,7 +92,5 @@ public class Employee {
 		return "Employee [employeeId=" + employeeId + ", name=" + name + ", emailId=" + emailId + ", password="
 				+ Arrays.toString(password) + ", phoneNumber=" + phoneNumber + "]";
 	}
-	
-	
 
 }

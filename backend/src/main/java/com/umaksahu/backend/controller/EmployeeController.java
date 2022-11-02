@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.umaksahu.backend.model.Employee;
-import com.umaksahu.backend.model.LoginResponse;
-import com.umaksahu.backend.model.RegistrationResponse;
+import com.umaksahu.backend.model.response.LoginResponse;
+import com.umaksahu.backend.model.response.RegistrationResponse;
 import com.umaksahu.backend.service.EmployeeService;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -26,24 +26,24 @@ public class EmployeeController {
 
 	@PostMapping(path = "/registerEmployee", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RegistrationResponse> addEmployee(@RequestBody @NonNull Employee employee) {
-		boolean isEmployeeAdded = employeeService.addEmployee(employee);
-		return ResponseEntity.status(isEmployeeAdded ? HttpStatus.OK : HttpStatus.UNPROCESSABLE_ENTITY)
-				.body(new RegistrationResponse(isEmployeeAdded, isEmployeeAdded ? "Success" : "Email already registered"));
+
+		if (employeeService.addEmployee(employee)) {
+			return ResponseEntity.status(HttpStatus.CREATED).body(new RegistrationResponse(true, "Success"));
+		}
+
+		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+				.body(new RegistrationResponse(false, "Email already registered"));
 	}
 
 	@PostMapping(path = "/loginEmployee", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<LoginResponse> login(@RequestBody @NonNull Employee employee) {
-		boolean isEmailRegistered = employeeService.isEmployeeAlreadyRegistered(employee);
-		
-		if (!isEmailRegistered) {
-			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-					.body(new LoginResponse(isEmailRegistered, "Email not registered", false));
-		} else {
-			boolean isLoginSuccess = employeeService.isEmployeeCredentialsValid(employee);
-			return ResponseEntity.status(isLoginSuccess ? HttpStatus.OK : HttpStatus.UNAUTHORIZED)
-					.body(new LoginResponse(isEmailRegistered, isLoginSuccess ? "Success" : "Wrong Password",
-							isLoginSuccess));
+
+		if (employeeService.isEmployeeCredentialsValid(employee)) {
+			return ResponseEntity.ok().body(new LoginResponse(true, "Success"));
 		}
+
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse(false, "Invalid Credentials"));
+
 	}
 
 }

@@ -7,10 +7,12 @@ export function isValidEmail(email) {
 }
 
 export function isValidPasswordLength(password) {
-  if (password.length >= 8) {
+  if (password.length >= 8 && password.length <= 50) {
     return true;
   }
-  window.alert("Password should be greater than 7 characters");
+  window.alert(
+    "Password should be greater than 7 characters and less than 51 characters"
+  );
   return false;
 }
 
@@ -19,5 +21,38 @@ export function areBothPasswordsEqual(password, passwordAgain) {
     return true;
   }
   window.alert("Passwords didnot match. Please enter your password again");
+  return false;
+}
+
+export function isValidName(name) {
+  if (name.length > 40) {
+    window.alert("name should not be greater than 40 characters");
+    return false;
+  }
+
+  if (
+    /^[a-z\u00C0-\u02AB'´`]+\.?\s([a-z\u00C0-\u02AB'´`]+\.?\s?)+$/i.test(name)
+  ) {
+    return true;
+  }
+
+  window.alert("Invalid name. Please enter your name again");
+  return false;
+}
+
+export function isValidPhoneNumber(phoneNumber) {
+  if (/^[0-9]{9,15}$/.test(phoneNumber)) {
+    return true;
+  }
+
+  window.alert("Phone Number cannot be less than 9 digits greater than 16 digits");
+  return false;
+}
+
+export function isValidEmployeeId(employeeId) {
+  if (employeeId.length <= 10) {
+    return true;
+  }
+  window.alert("Employee Id cannot be greater than 10 digits");
   return false;
 }

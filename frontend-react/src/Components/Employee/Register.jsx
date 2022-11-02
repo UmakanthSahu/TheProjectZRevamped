@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { getJSONRequestData, REGISTER_URL } from "../../Services/ApiService";
-import { areBothPasswordsEqual, isValidEmail, isValidPasswordLength } from "../../Services/FormValidation";
+import {
+  areBothPasswordsEqual,
+  isValidEmail,
+  isValidEmployeeId,
+  isValidName,
+  isValidPasswordLength,
+  isValidPhoneNumber,
+} from "../../Services/FormValidation";
 
 export const Register = (props) => {
   const [name, setName] = useState("");
@@ -15,8 +22,14 @@ export const Register = (props) => {
     event.preventDefault();
 
     // form input validation
-    if(isValidEmail(email) && isValidPasswordLength(password) && areBothPasswordsEqual(password, password2)){
-      
+    if (
+      isValidName(name) &&
+      isValidEmployeeId(employeeId) &&
+      isValidPhoneNumber(phoneNumber) &&
+      isValidEmail(email) &&
+      isValidPasswordLength(password) &&
+      areBothPasswordsEqual(password, password2)
+    ) {
       let employeeRegistrationData = {
         name: name,
         emailId: email,
@@ -24,26 +37,26 @@ export const Register = (props) => {
         phoneNumber: phoneNumber,
         employeeId: employeeId,
       };
-      
+
       //post request to backend API using fetch call
       fetch(REGISTER_URL, getJSONRequestData(employeeRegistrationData))
         .then(async (resp) => {
-
           //body of response
           const data = await resp.json();
 
-          if (resp.status === 200) {
+          if (resp.status === 201) {
             props.navigate("/registrationSuccess");
           } else {
             props.setTitle(data.description);
             props.navigate("/registrationFailure");
           }
-
         })
         .catch((err) => {
-          window.alert("Something went wrong.... Please try again after some time");
+          window.alert(
+            "Something went wrong.... Please try again after some time"
+          );
         });
-    }else{
+    } else {
       setPassword("");
       setPassword2("");
     }
