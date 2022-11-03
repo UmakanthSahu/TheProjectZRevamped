@@ -28,16 +28,16 @@ export function isValidName(name) {
   if (name.length > 40) {
     window.alert("name should not be greater than 40 characters");
     return false;
-  }
-
-  if (
-    /^[a-z\u00C0-\u02AB'´`]+\.?\s([a-z\u00C0-\u02AB'´`]+\.?\s?)+$/i.test(name)
-  ) {
+  }else{
     return true;
   }
 
-  window.alert("Invalid name. Please enter your name again");
-  return false;
+  // if (/^[A-Za-z\\s]{2,40}$/i.test(name)) {
+  //   return true;  
+  // }
+
+  // window.alert("Invalid name. Please enter your name again");
+  // return false;
 }
 
 export function isValidPhoneNumber(phoneNumber) {

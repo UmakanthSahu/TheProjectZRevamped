@@ -3,20 +3,21 @@ package com.umaksahu.backend.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.umaksahu.backend.model.Employee;
+import com.umaksahu.backend.model.request.EmployeeLoginRequest;
+import com.umaksahu.backend.model.request.EmployeeRegistrationRequest;
 import com.umaksahu.backend.repository.EmployeeRepository;
 
 @Service
 public class EmployeeService {
 
 	@Autowired
-	EmployeeRepository employeeRepository;
+	private EmployeeRepository employeeRepository;
 
-	public boolean isEmployeeCredentialsValid(Employee employee) {
+	public boolean isEmployeeCredentialsValid(EmployeeLoginRequest employee) {
 		return employeeRepository.findByEmailIdAndPassword(employee.getEmailId(), employee.getPassword()).isPresent();
 	}
 
-	public boolean addEmployee(Employee employee) {
+	public boolean addEmployee(EmployeeRegistrationRequest employee) {
 		if(existsById(employee)) {
 			return false;
 		}
@@ -25,7 +26,7 @@ public class EmployeeService {
 		return true;
 	}
 	
-	private boolean existsById(Employee employee) {
+	private boolean existsById(EmployeeRegistrationRequest employee) {
 		return employeeRepository.existsById(employee.getEmailId());
 	}
 }

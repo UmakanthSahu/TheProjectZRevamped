@@ -8,14 +8,13 @@ export const RedirectWithMessage = (props) => {
     //changes time every second from 5 to 1
     const countdownTimer = setInterval(() => {setTime((prev) => prev - 1); console.log(time)}, 1000); 
 
-    const pageRedirectTimeout = setTimeout(() => {
+    setTimeout(() => {
       clearInterval(countdownTimer);
       props.navigate(props.properties.primaryLink);
     }, 5100);
 
     return () => {
       clearInterval(countdownTimer);
-      //clearTimeout(pageRedirectTimeout);
     };
   });
 
