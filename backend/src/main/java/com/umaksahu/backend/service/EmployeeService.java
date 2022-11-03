@@ -1,6 +1,7 @@
 package com.umaksahu.backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.umaksahu.backend.model.request.EmployeeLoginRequest;
@@ -18,15 +19,15 @@ public class EmployeeService {
 	}
 
 	public boolean addEmployee(EmployeeRegistrationRequest employee) {
-		if(existsById(employee)) {
+		try {
+			employeeRepository.save(employee);			
+		}catch(DataIntegrityViolationException e) {
 			return false;
 		}
-		
-		employeeRepository.save(employee);
 		return true;
 	}
 	
-	private boolean existsById(EmployeeRegistrationRequest employee) {
-		return employeeRepository.existsById(employee.getEmailId());
-	}
+//	private boolean existsById(EmployeeRegistrationRequest employee) {
+//		return employeeRepository.existsById(employee.getEmailId());
+//	}
 }
