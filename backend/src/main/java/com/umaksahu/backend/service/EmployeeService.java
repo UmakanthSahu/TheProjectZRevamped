@@ -15,7 +15,11 @@ public class EmployeeService {
 	private EmployeeRepository employeeRepository;
 
 	public boolean isEmployeeCredentialsValid(EmployeeLoginRequest employee) {
-		return employeeRepository.findByEmailIdAndPassword(employee.getEmailId(), employee.getPassword()).isPresent();
+		try {
+			return employeeRepository.findByEmailIdAndPassword(employee.getEmailId(), employee.getPassword()).isPresent();
+		}finally {
+			employee.destroyPassword();
+		}
 	}
 
 	public boolean addEmployee(EmployeeRegistrationRequest employee) {
@@ -23,11 +27,10 @@ public class EmployeeService {
 			employeeRepository.save(employee);			
 		}catch(DataIntegrityViolationException e) {
 			return false;
+		}finally {
+			employee.destroyPassword();
 		}
 		return true;
 	}
-	
-//	private boolean existsById(EmployeeRegistrationRequest employee) {
-//		return employeeRepository.existsById(employee.getEmailId());
-//	}
+
 }

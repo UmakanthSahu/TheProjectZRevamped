@@ -1,5 +1,7 @@
 package com.umaksahu.backend.model.request;
 
+import java.util.Arrays;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,6 +10,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.data.domain.Persistable;
+
+import com.umaksahu.backend.annotation.PasswordValidatorAnnotation;
 
 @Entity
 @Table(name = "employees")
@@ -20,6 +24,7 @@ public class EmployeeLoginRequest  implements Persistable<String>{
 	private String emailId;
 
 	@Column(nullable = false, length = 50)
+	@PasswordValidatorAnnotation
 	private char[] password;
 
 	public EmployeeLoginRequest() {
@@ -50,6 +55,10 @@ public class EmployeeLoginRequest  implements Persistable<String>{
 	// and will not perform an update 
 	public boolean isNew() {
 		return true;
+	}
+	
+	public void destroyPassword() {
+		Arrays.fill(password, '*');
 	}
 
 }
