@@ -44,12 +44,31 @@ export const Register = (props) => {
           //body of response
           const data = await resp.json();
 
+          // CREATED
           if (resp.status === 201) {
             props.navigate("/registrationSuccess");
-          } else {
-            props.setTitle(data.description);
-            props.navigate("/registrationFailure");
+            return;
           }
+
+          // UNPROCESSABLE ENTITY
+          if (resp.status === 422) {
+            props.setTitle(data.description);
+          }
+          // VIOLATED INPUT FORM
+          else if (resp.status === 400) {
+            let violations = "";
+            for (const violation of data.violations) {
+              violations = violations.concat(violation.message, ". ");
+            }
+
+            props.setTitle(violations.trim());
+          }
+          // ANY OTHER CASE
+          else {
+            props.setTitle("Something went wrong...");
+          }
+
+          props.navigate("/registrationFailure");
         })
         .catch((err) => {
           window.alert(

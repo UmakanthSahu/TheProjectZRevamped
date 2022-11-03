@@ -6,7 +6,7 @@ export const RedirectWithMessage = (props) => {
 
   useEffect(() => {
     //changes time every second from 5 to 1
-    const countdownTimer = setInterval(() => {setTime((prev) => prev - 1); console.log(time)}, 1000); 
+    const countdownTimer = setInterval(() => {setTime((prev) => prev - 1); }, 1000); 
 
     setTimeout(() => {
       clearInterval(countdownTimer);

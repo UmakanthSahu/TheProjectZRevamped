@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { getJSONRequestData, LOGIN_URL } from "../../Services/ApiService";
-import { isValidEmail, isValidPasswordLength } from "../../Services/FormValidation";
+import {
+  isValidEmail,
+  isValidPasswordLength,
+} from "../../Services/FormValidation";
 
 export const Login = (props) => {
   const [email, setEmail] = useState("");
@@ -22,21 +25,41 @@ export const Login = (props) => {
         emailId: email,
         password: password,
       };
-      
+
       //connecting with backend
       fetch(LOGIN_URL, getJSONRequestData(employeeLoginData))
         .then(async (resp) => {
           const data = await resp.json();
+
+          // 200 OK LOGIN SUCCESS
           if (resp.status === 200) {
             props.setAuthorizedLogin(email);
             props.navigate("/dashboard");
-          } else {
-            props.setTitle(data.description);
-            props.navigate("/invalidCredentials");
+            return;
           }
+          // UNAUTHORIZED
+          if (resp.status === 401) {
+            props.setTitle(data.description);
+          }
+          // VIOLATED INPUT FORM
+          else if (resp.status === 400) {
+            let violations = "";
+            for (const violation of data.violations) {
+              violations = violations.concat(violation.message, ". ");
+            }
+
+            props.setTitle(violations);
+          }
+          //ANY OTHER CASE
+          else {
+            props.setTitle("Something went wrong...");
+          }
+          props.navigate("/invalidCredentials");
         })
         .catch((err) => {
-          window.alert("Something went wrong.... Please try again after some time");
+          window.alert(
+            "Something went wrong.... Please try again after some time"
+          );
         });
     } else {
       setPassword("");
