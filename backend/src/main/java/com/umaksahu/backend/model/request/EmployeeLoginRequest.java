@@ -15,7 +15,7 @@ import com.umaksahu.backend.annotation.PasswordValidatorAnnotation;
 
 @Entity
 @Table(name = "employees")
-public class EmployeeLoginRequest  implements Persistable<String>{
+public class EmployeeLoginRequest implements Persistable<String> {
 	@Id
 	@Column(name = "email_id", length = 30, nullable = false)
 	@NotBlank
@@ -36,12 +36,12 @@ public class EmployeeLoginRequest  implements Persistable<String>{
 		this.password = password;
 	}
 
-	public String getEmailId() {
-		return emailId;
+	public void destroyPassword() {
+		Arrays.fill(password, '*');
 	}
 
-	public char[] getPassword() {
-		return password;
+	public String getEmailId() {
+		return emailId;
 	}
 
 	@Override
@@ -49,16 +49,17 @@ public class EmployeeLoginRequest  implements Persistable<String>{
 		return getEmailId();
 	}
 
+	public char[] getPassword() {
+		return password;
+	}
+
 	@Override
-	// making it to always true 
-	// throws DataIntegrityViolationException whenever an attempt is made to register with same emailId
-	// and will not perform an update 
+	// making it to always true
+	// throws DataIntegrityViolationException whenever an attempt is made to
+	// register with same emailId
+	// and will not perform an update
 	public boolean isNew() {
 		return true;
-	}
-	
-	public void destroyPassword() {
-		Arrays.fill(password, '*');
 	}
 
 }

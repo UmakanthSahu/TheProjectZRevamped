@@ -1,26 +1,18 @@
 import React, { useState } from "react";
-import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { getJSONRequestData, LOGIN_URL } from "../../Services/ApiService";
-import {
-  isValidEmail,
-  isValidPasswordLength,
-} from "../../Services/FormValidation";
+import { isValidEmail, isStrongPassword } from "../../Services/FormValidation";
 
 export const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  useEffect(() => {
-    if (props.authorizedLogin !== "") {
-      props.navigate("/dashboard");
-    }
-  });
+  const navigate = useNavigate();
 
   const onSubmitLoginHandler = (event) => {
     event.preventDefault();
 
     // validation of form input
-    if (isValidEmail(email) && isValidPasswordLength(password)) {
+    if (isValidEmail(email) && isStrongPassword(password)) {
       let employeeLoginData = {
         emailId: email,
         password: password,
@@ -29,14 +21,15 @@ export const Login = (props) => {
       //connecting with backend
       fetch(LOGIN_URL, getJSONRequestData(employeeLoginData))
         .then(async (resp) => {
-          const data = await resp.json();
-
+          
           // 200 OK LOGIN SUCCESS
           if (resp.status === 200) {
             props.setAuthorizedLogin(email);
-            props.navigate("/dashboard");
+            navigate("/dashboard");
             return;
           }
+
+          const data = await resp.json();
           // UNAUTHORIZED
           if (resp.status === 401) {
             props.setTitle(data.description);
@@ -54,12 +47,13 @@ export const Login = (props) => {
           else {
             props.setTitle("Something went wrong...");
           }
-          props.navigate("/invalidCredentials");
+          navigate("/invalidCredentials");
         })
         .catch((err) => {
           window.alert(
             "Something went wrong.... Please try again after some time"
           );
+          console.log(err);
         });
     } else {
       setPassword("");

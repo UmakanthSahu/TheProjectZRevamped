@@ -1,17 +1,21 @@
 export function isValidEmail(email) {
-  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+  if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
     return true;
   }
   window.alert("Please enter a valid email!");
   return false;
 }
 
-export function isValidPasswordLength(password) {
-  if (password.length >= 8 && password.length <= 50) {
+export function isStrongPassword(password) {
+  if (
+    password.length >= 8 &&
+    password.length <= 50 &&
+    /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,50}$/.test(password)
+  ) {
     return true;
   }
   window.alert(
-    "Password should be greater than 7 characters and less than 51 characters"
+    "Password should be greater than 7 characters and less than 51 characters. Also, should contain alteast one Uppercase, Lowercase, Digit and Special Character"
   );
   return false;
 }
@@ -28,12 +32,12 @@ export function isValidName(name) {
   if (name.length > 40) {
     window.alert("name should not be greater than 40 characters");
     return false;
-  }else{
+  } else {
     return true;
   }
 
   // if (/^[A-Za-z\\s]{2,40}$/i.test(name)) {
-  //   return true;  
+  //   return true;
   // }
 
   // window.alert("Invalid name. Please enter your name again");
@@ -45,7 +49,9 @@ export function isValidPhoneNumber(phoneNumber) {
     return true;
   }
 
-  window.alert("Phone Number cannot be less than 9 digits greater than 16 digits");
+  window.alert(
+    "Phone Number cannot be less than 9 digits greater than 16 digits"
+  );
   return false;
 }
 

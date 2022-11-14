@@ -5,7 +5,7 @@ import {
   isValidEmail,
   isValidEmployeeId,
   isValidName,
-  isValidPasswordLength,
+  isStrongPassword,
   isValidPhoneNumber,
 } from "../../Services/FormValidation";
 
@@ -27,7 +27,7 @@ export const Register = (props) => {
       isValidEmployeeId(employeeId) &&
       isValidPhoneNumber(phoneNumber) &&
       isValidEmail(email) &&
-      isValidPasswordLength(password) &&
+      isStrongPassword(password) &&
       areBothPasswordsEqual(password, password2)
     ) {
       let employeeRegistrationData = {
@@ -166,7 +166,7 @@ export const Register = (props) => {
                 required
               />
               <div id="passwordHelpBlock" className="form-text">
-                Your password must be atleast 8 characters long.
+                Your password must be atleast 8 characters and must be strong.
               </div>
             </div>
             <div className="mb-3">

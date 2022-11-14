@@ -1,5 +1,5 @@
 import "./App.css";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import { Navbar } from "./Components/Common/Navbar";
 import { Home } from "./Components/Common/Home";
 import { Login } from "./Components/Employee/Login";
@@ -23,6 +23,10 @@ function App() {
     }
   };
 
+  function isUserLoggedIn(){
+    return authorizedLogin !== "";
+  }
+
   return (
     <div className="App">
       <Navbar authorizedLogin={authorizedLogin} logoutHandler={logoutHandler} />
@@ -32,10 +36,12 @@ function App() {
             exact
             path="/login"
             element={
+              isUserLoggedIn() ?
+              <Navigate to="/dashboard"/>
+              :
               <Login
                 authorizedLogin={authorizedLogin}
                 setAuthorizedLogin={setAuthorizedLogin}
-                navigate={navigate}
                 setTitle = {setTitle}
               />
             }
@@ -45,12 +51,12 @@ function App() {
             exact
             path="/dashboard"
             element={
+              isUserLoggedIn() ?
               <Dashboard
-                authorizedLogin={authorizedLogin}
                 setAuthorizedLogin={setAuthorizedLogin}
                 logoutHandler={logoutHandler}
-                navigate={navigate}
               />
+              : <Navigate to="/sessionExpired"/>
             }
           />
           <Route
@@ -65,7 +71,6 @@ function App() {
                   primaryLink: "/login",
                   color: "red",
                 }}
-                navigate={navigate}
               />
             }
           />
@@ -81,7 +86,6 @@ function App() {
                   primaryLink: "/login",
                   color: "red",
                 }}
-                navigate={navigate}
               />
             }
           />
@@ -97,7 +101,6 @@ function App() {
                   primaryLink: "/login",
                   color: "green",
                 }}
-                navigate={navigate}
               />
             }
           />
@@ -113,7 +116,6 @@ function App() {
                   primaryLink: "/login",
                   color: "green",
                 }}
-                navigate={navigate}
               />
             }
           />
@@ -129,7 +131,6 @@ function App() {
                   primaryLink: "/register",
                   color: "red",
                 }}
-                navigate={navigate}
               />
             }
           />

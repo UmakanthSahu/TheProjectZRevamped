@@ -1,15 +1,6 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 
 export const Dashboard = (props) => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (props.authorizedLogin === "") {
-      navigate("/sessionExpired");
-    }
-  });
-
   return (
     <div>
       <div className="container my-3">

@@ -27,10 +27,12 @@ public class EmployeeController {
 	private EmployeeService employeeService;
 
 	@PostMapping(path = "/registerEmployee", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<EmployeeRegistrationResponse> addEmployee(@RequestBody @Valid EmployeeRegistrationRequest employee) {
+	public ResponseEntity<EmployeeRegistrationResponse> addEmployee(
+			@RequestBody @Valid EmployeeRegistrationRequest employee) {
 
 		if (employeeService.addEmployee(employee)) {
-			return ResponseEntity.status(HttpStatus.CREATED).body(new EmployeeRegistrationResponse(true, "Success"));
+			return ResponseEntity.status(HttpStatus.CREATED)
+					.body(new EmployeeRegistrationResponse(true, "Success"));
 		}
 
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -41,10 +43,12 @@ public class EmployeeController {
 	public ResponseEntity<EmployeeLoginResponse> login(@RequestBody @Valid EmployeeLoginRequest employee) {
 
 		if (employeeService.isEmployeeCredentialsValid(employee)) {
-			return ResponseEntity.ok().body(new EmployeeLoginResponse(true, "Success"));
+			return ResponseEntity.ok()
+					.body(new EmployeeLoginResponse(true, "Success"));
 		}
 
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new EmployeeLoginResponse(false, "Invalid Credentials"));
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+				.body(new EmployeeLoginResponse(false, "Invalid Credentials"));
 	}
 
 }
