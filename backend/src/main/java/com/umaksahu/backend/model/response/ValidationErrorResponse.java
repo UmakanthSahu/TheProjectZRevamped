@@ -6,9 +6,10 @@ import java.util.List;
 import com.umaksahu.backend.model.Violation;
 
 public class ValidationErrorResponse {
-	private List<Violation> violations = new ArrayList<Violation>();
+	private List<Violation> violations = null;
 
 	public ValidationErrorResponse() {
+		violations = new ArrayList<Violation>();
 	}
 
 	public ValidationErrorResponse(List<Violation> violations) {

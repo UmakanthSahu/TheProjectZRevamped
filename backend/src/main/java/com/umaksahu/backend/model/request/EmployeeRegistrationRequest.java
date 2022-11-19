@@ -24,6 +24,10 @@ public class EmployeeRegistrationRequest extends EmployeeLoginRequest {
 	@Column(name = "phone_number", nullable = false, length = 15)
 	@Pattern(regexp = "^[0-9+-]{8,15}", message = "Phone number must not be less than 8 or greater than 16 digits")
 	private String phoneNumber;
+	
+	public EmployeeRegistrationRequest(EmployeeLoginRequest loginDetails, long employeeId, String name, String phoneNumber) {
+		this(employeeId, name, loginDetails.getEmailId(), loginDetails.getPassword(), phoneNumber);
+	}
 
 	public EmployeeRegistrationRequest(long employeeId, String name, String emailId, char[] password,
 			String phoneNumber) {

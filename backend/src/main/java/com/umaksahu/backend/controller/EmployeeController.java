@@ -26,29 +26,31 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
 
+	public EmployeeController(EmployeeService employeeService) {
+		this.employeeService = employeeService;
+	}
+
 	@PostMapping(path = "/registerEmployee", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<EmployeeRegistrationResponse> addEmployee(
+	public ResponseEntity<EmployeeRegistrationResponse> registerEmployee(
 			@RequestBody @Valid EmployeeRegistrationRequest employee) {
 
 		if (employeeService.addEmployee(employee)) {
-			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(new EmployeeRegistrationResponse(true, "Success"));
+			return ResponseEntity.status(HttpStatus.CREATED).body(new EmployeeRegistrationResponse(true, "Success"));
 		}
 
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-				.body(new EmployeeRegistrationResponse(false, "Email already registered"));
+				.body(new EmployeeRegistrationResponse("Email already registered"));
 	}
 
 	@PostMapping(path = "/loginEmployee", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<EmployeeLoginResponse> login(@RequestBody @Valid EmployeeLoginRequest employee) {
+	public ResponseEntity<EmployeeLoginResponse> loginEmployee(@RequestBody @Valid EmployeeLoginRequest employee) {
 
 		if (employeeService.isEmployeeCredentialsValid(employee)) {
-			return ResponseEntity.ok()
-					.body(new EmployeeLoginResponse(true, "Success"));
+			return ResponseEntity.ok().body(new EmployeeLoginResponse(true, "Success"));
 		}
 
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-				.body(new EmployeeLoginResponse(false, "Invalid Credentials"));
+				.body(new EmployeeLoginResponse("Invalid Credentials"));
 	}
 
 }
